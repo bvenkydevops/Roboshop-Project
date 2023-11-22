@@ -1,0 +1,56 @@
+replicaCount: 1
+image:
+  repository: 739561048503.dkr.ecr.us-east-1.amazonaws.com/frontend
+  pullPolicy: Always
+
+serviceAccount:
+  create: true
+  annotations: {}
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 80
+
+resources:
+   limits:
+     cpu: 250m
+     memory: 512Mi
+   requests:
+     cpu: 250m
+     memory: 512Mi
+
+env:
+  name: prod
+
+configmap:
+  create: true
+  content:
+    roboshop.conf: |
+        proxy_http_version 1.1;
+        location /images/ {
+            expires 5s;
+            root   /usr/share/nginx/html;
+            try_files $uri /images/placeholder.jpg;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location /api/catalogue/ { proxy_pass http://catalogue-dev:80/; }
+        location /api/user/ { proxy_pass http://user-dev:80/; }
+        location /api/cart/ { proxy_pass http://cart-dev:80/; }
+        location /api/shipping/ { proxy_pass http://shipping-dev:80/; }
+        location /api/payment/ { proxy_pass http://payment-dev:80/; }
+        location /health {
+                return 200 'OK';
+            }
+        location /nginx_status {
+            stub_status on;
+            access_log off;
+        }
+
+appName: frontend
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70

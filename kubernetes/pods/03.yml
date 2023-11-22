@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample3
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    env:
+      - name: URL
+        value: example.com
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config1
+data:
+  URL: example.com
+  URL1: yahoo.com
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample4
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    envFrom:
+      - configMapRef:
+          name: config1
+      - secretRef:
+          name: secret1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret1
+data:
+  username: YWRtaW4=
+  password: YWRtaW4xMjM=

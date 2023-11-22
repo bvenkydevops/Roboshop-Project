@@ -1,0 +1,6 @@
+#########
+podInfo:
+  name: nginx-app1
+  image: nginx:1.17
+podLabels:
+  project: nginx-app1

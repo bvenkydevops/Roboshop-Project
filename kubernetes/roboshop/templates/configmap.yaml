@@ -1,0 +1,12 @@
+{{- if .Values.configmap.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    {{- include "roboshop.labels" . | nindent 4 }}
+data:
+  {{- with .Values.configmap.content }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}
