@@ -1,0 +1,12 @@
+groups:
+  - name: Alerts
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: {%raw%}"Instance Down - [{{ $labels.instance}}]"{%endraw%}
+
+          description: {%raw%}"Instance Down - [{{ $labels.instance}}]"{%endraw%}

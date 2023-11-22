@@ -1,0 +1,24 @@
+- name: Remove existing code
+  ansible.builtin.file:
+    path: "{{APP_LOCATION}}"
+    state: absent
+  when: APP_TYPE == "frontend" or APP_TYPE == "backend"
+
+- name: Create App code
+  ansible.builtin.file:
+    path: "{{APP_LOCATION}}"
+    state: directory
+  when: APP_TYPE == "frontend" or APP_TYPE == "backend"
+
+- name: Download App Component
+  get_url:
+      url: http://172.31.7.184:8081/repository/{{COMPONENT}}/{{COMPONENT}}-{{APP_VERSION}}.zip
+      dest: /tmp/{{COMPONENT}}.zip
+      url_username: "{{NEXUS_USER}}"
+      url_password: "{{NEXUS_PASS}}"
+
+- name: Extract {{COMPONENT}} Code
+  ansible.builtin.unarchive:
+    src: /tmp/{{COMPONENT}}.zip
+    dest: "{{APP_LOCATION}}"
+    remote_src: yes
