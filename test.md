@@ -1,4 +1,14 @@
 
+this is a like a Readme file or using pdf in gihub
+
+
+
+
+
+
+
+hello guys
+
 hvdhvegw h e s
 vdwgevgc gw
 c ewh h ewjbjcw
@@ -11,4 +21,5 @@ oy
 
 
 hello guys
+
 
